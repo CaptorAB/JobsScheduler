@@ -17,6 +17,6 @@ start:
 	PYTHONPATH=${PWD} venv/bin/python3 app/main.py
 
 docker_build:
-        docker build -f Dockerfile --tag $(docker_tag):$(DATE)_$(GIT_HASH) .
-        docker push ${docker_tag}:$(DATE)_$(GIT_HASH)
+	docker build -f Dockerfile --tag $(docker_tag):$(DATE)_$(GIT_HASH) .
+	docker push ${docker_tag}:$(DATE)_$(GIT_HASH)
 
