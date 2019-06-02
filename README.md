@@ -1,3 +1,6 @@
+[![CircleCI](https://circleci.com/gh/CaptorAB/JobsScheduler.svg?style=svg)](https://circleci.com/gh/CaptorAB/JobsScheduler)
+
+
 # ScheduleJob
 python-crontab, flask-restplus and docker based replacement for Azure Scheduler
 
