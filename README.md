@@ -21,9 +21,11 @@ https://docs.microsoft.com/en-us/rest/api/scheduler/jobs/list
 ## Configuration
 create a file app/settings.py, with
 ```
-JWT_KEY = "YOUR_SECRET"
+JWKS_URI = "https://someplace.com/.well-known/jwks.json"
 JWT_AUDIENCE = "YOUR_AUDIENCE"
 ```
+
+
 create a file .env with
 ``` 
 docker_tag=docker.io/your_id_/your_repo
@@ -37,6 +39,12 @@ make docker_build
 ## Unit tests
 ```
 make test
+```
+
+## Run locally
+``` 
+mongod
+make start
 ```
 
 # Current cron jobs

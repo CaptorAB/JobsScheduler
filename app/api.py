@@ -1,9 +1,10 @@
-import flask
-from flask_restplus import Resource, Api, reqparse
-from flask import current_app
 import datetime
+
+import flask
+from flask_restplus import Resource, Api
+from flask import current_app
 from croniter import croniter
-from pprint import pprint
+
 from app.jwt_decorators import jwt_required
 from app.utils import validate_input
 from app.utils import validate_output
@@ -25,9 +26,9 @@ authorizations = {
 
 api_bp = flask.Blueprint('api', __name__, None)
 api = Api(api_bp,
-          title='ScheduleJobs API',
+          title='JobsScheduler API',
           version='0.1',
-          description='ScheduleJobs',
+          description='JobsScheduler',
           security='apikey', doc='/swagger/', authorizations=authorizations)
 
 JOB_MODEL = api.schema_model('job', JOB_SCHEMA)
@@ -35,6 +36,8 @@ JOBS_MODEL = api.schema_model('jobs', JOBS_SCHEMA)
 
 JOB_INFO_MODEL = api.schema_model('job_info', JOB_INFO_SCHEMA)
 JOBS_INFO_MODEL = api.schema_model('jobs_info', JOBS_INFO_SCHEMA)
+
+
 
 
 @api.route('/ping')
@@ -90,6 +93,7 @@ class Jobs(Resource):
     @validate_output(JOBS_SCHEMA)
     def get(self):
         jobs = current_app.db.get_all_jobs()
+        print("jobs: ", jobs)
         for job in jobs:
             if 'basic_auth' in job:
                 job['basic_auth']['password'] = 'CENSORED'
@@ -109,7 +113,7 @@ class Jobs(Resource):
         for job in jobs:
             if 'basic_auth' in job:
                 job['basic_auth']['password'] = 'CENSORED'
-            
+
         return jobs, 200
 
 

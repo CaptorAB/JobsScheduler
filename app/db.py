@@ -1,4 +1,6 @@
 import json
+import datetime
+
 from bson import json_util
 
 
@@ -68,3 +70,21 @@ class DB(object):
 
     def delete_db(self):
         pass
+
+    def get_jwks(self):
+        jwks = self.db.jwks_collection.find_one({})
+        return jwks
+
+    def put_jwks(self, jwks):
+        exist = self.db.jwks_collection.find_one({})
+        if exist:
+            filter = {"_id": exist._id}
+            jwks.update({"last_modified": datetime.datetime.utcnow()})
+            self.db.jwks_collection.replace_one(filter, jwks)
+            result = self.db.jwks_collection.find_one(filter)
+            return convert(result)
+        else:
+            jwks.update({"last_modified": datetime.datetime.utcnow()})
+            r = self.db.jwks_collection.insert_one(jwks)
+            result = self.db.jwks_collection.find_one({"_id": r.inserted_id})
+            return convert(result)

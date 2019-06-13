@@ -19,8 +19,8 @@ def create_app():
     flask_app = base_create_app()
     CORS(flask_app)
     from app import settings as settings
-    flask_app.config['JWT_KEY'] = settings.JWT_KEY
     flask_app.config['JWT_AUDIENCE'] = settings.JWT_AUDIENCE
+    flask_app.config['JWKS_URI'] = settings.JWKS_URI
     client = MongoClient()
     db = client.local
     flask_app.db = DB(db=db)
@@ -30,8 +30,8 @@ def create_app():
 def create_app_for_testing():
     flask_app = base_create_app()
     from app import test_settings as settings
-    flask_app.config['JWT_KEY'] = settings.JWT_KEY
     flask_app.config['JWT_AUDIENCE'] = settings.JWT_AUDIENCE
+    flask_app.config['JWKS_URI'] = settings.JWKS_URI
     import mongomock
     db = mongomock.MongoClient().db
     flask_app.db = DB(db=db)

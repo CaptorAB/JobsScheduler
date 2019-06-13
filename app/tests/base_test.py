@@ -2,8 +2,8 @@ import os
 import unittest
 import datetime
 import time
-import base64
-import jwt as pyjwt
+import jwt
+from jwt.algorithms import RSAAlgorithm
 
 from app.main import create_app_for_testing
 
@@ -24,11 +24,16 @@ class BaseTest(unittest.TestCase):
         d1 = datetime.date(2028, 6, 1)
         exp = int(time.mktime(d1.timetuple()))
 
-        data = {'unique_name': '201801011234',
-                'db': 'prod',
-                'aud': self.app.config['JWT_AUDIENCE'],
-                'exp': exp,
-                'nbf': nbf}
+        payload = {'unique_name': '201801011234',
+                   'db': 'prod',
+                   'aud': self.app.config['JWT_AUDIENCE'],
+                   'exp': exp,
+                   'nbf': nbf}
 
-        # return pyjwt.encode(data, base64.b64decode(self.app.config['JWT_KEY']), algorithm='HS256')
-        return pyjwt.encode(data, self.app.config['JWT_KEY'], algorithm='HS256')
+        file_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "unittest.private.pem")
+        with open(file_path, 'rb') as file_handle:
+            pem = file_handle.read()
+
+        token = jwt.encode(payload=payload, key=pem, headers={"kid": "unittest"}, algorithm="RS256")
+
+        return token

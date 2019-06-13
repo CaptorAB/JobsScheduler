@@ -1,9 +1,15 @@
+import datetime
+import json
+import logging
+from pprint import pprint
+
 from functools import wraps
 from flask import request
-import jwt as pyjwt
-import base64
+import requests
+
+import jwt
+from jwt.algorithms import RSAAlgorithm
 import http.client
-from pprint import pprint
 
 try:
     from flask import _app_ctx_stack as ctx_stack
@@ -34,6 +40,34 @@ class NoAuthorizationError(FlaskJWTException):
     pass
 
 
+class NoKeyMatchingKidFound(FlaskJWTException):
+    pass
+
+
+def get_jwks():
+    logging.info("get_jwks() {}".format(datetime.datetime.utcnow()))
+    jwks = current_app.db.get_jwks()
+    jwks_uri = current_app.config['JWKS_URI']
+
+
+    if not jwks or \
+            "last_modified" in jwks and jwks["last_modified"] < datetime.datetime.utcnow() - datetime.timedelta(
+        minutes=20):
+        jwks_uri = current_app.config['JWKS_URI']
+
+
+        if jwks_uri.startswith("file://"):
+            file_path = jwks_uri.split("file://")[1];
+            with open(file_path, 'rb') as file_handle:
+                jwks = json.load(file_handle)
+        else:
+            jwks = requests.get(jwks_uri, verify=False, timeout=10).json()
+
+        jwks = current_app.db.put_jwks(jwks)
+
+    return jwks
+
+
 def jwt_required(fn):
     """
     If you decorate a view with this, it will ensure that the requester has a
@@ -59,9 +93,18 @@ def decode_jwt(encoded_token):
     Returns the decoded token from an encoded one. This does all the checks
     to insure that the decoded token is valid before returning it.
     """
-    secret = current_app.config['JWT_KEY']
     audience = current_app.config['JWT_AUDIENCE']
-    return pyjwt.decode(encoded_token, secret, algorithms=['HS256'], audience=audience)
+    header = jwt.get_unverified_header(encoded_token)
+    kid = header["kid"]
+    keys = get_jwks()["keys"]
+    keys = {key["kid"]: key for key in keys}
+    if kid not in keys:
+        msg = "No key matching kid: {} found".format(kid)
+        raise NoKeyMatchingKidFound(msg)
+
+    public_key = RSAAlgorithm.from_jwk(json.dumps(keys[kid]))
+
+    return jwt.decode(encoded_token, key=public_key, algorithms=['RS256'], audience=audience)
 
 
 def _decode_jwt_from_headers():

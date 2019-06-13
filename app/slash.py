@@ -9,7 +9,7 @@ def slash():
             <html>
             <body>
             
-            <h1>ScheduleJobs</h1>
+            <h1>JobsScheduler</h1>
             
             <a href="/api/swagger">Swagger API description</a>
             
