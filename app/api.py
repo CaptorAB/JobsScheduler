@@ -1,4 +1,5 @@
 import datetime
+import copy
 
 import flask
 from flask_restplus import Resource, Api
@@ -37,7 +38,8 @@ JOBS_MODEL = api.schema_model('jobs', JOBS_SCHEMA)
 JOB_INFO_MODEL = api.schema_model('job_info', JOB_INFO_SCHEMA)
 JOBS_INFO_MODEL = api.schema_model('jobs_info', JOBS_INFO_SCHEMA)
 
-
+JOB_PATCH_SCHEMA = copy.deepcopy(JOB_SCHEMA)
+JOB_PATCH_SCHEMA['required'] = []
 
 
 @api.route('/ping')
@@ -163,6 +165,24 @@ class Job(Resource):
 
         if 'basic_auth' in job:
             job['basic_auth']['password'] = 'CENSORED'
+
+        return job, 200
+
+    @jwt_required
+    @validate_input(JOB_PATCH_SCHEMA)
+    @validate_output(JOB_SCHEMA)
+    def patch(self, name):
+        if not current_app.db.job_exist(name):
+            api.abort(404, "job {} doesn't exist".format(name))
+
+        job = current_app.db.get_job(name)
+        job.update(api.payload)
+
+        if not current_app.testing:
+            if cron_job.exist(job['name']):
+                cron_job.remove_job(job['name'])
+            if job['enabled']:
+                cron_job.add_job(job)
 
         return job, 200
 

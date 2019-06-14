@@ -76,6 +76,33 @@ class TestAPI(BaseTest):
             self.assertEqual(http.client.OK, resp.status_code, msg=resp.data)
             self.assertEqual(updated_job, json.loads(resp.data), msg=resp.data)
 
+    def test_patch_job(self):
+        token = self.create_token()
+        with self.test_client as c:
+            jobs = [deepcopy(EXAMPLE_JOB)]
+            resp = c.post(
+                '/api/jobs',
+                data=json.dumps(jobs),
+                headers={'Content-Type': 'application/json; charset=utf-8',
+                         'Authorization': 'Bearer {}'.format(token.decode('utf-8'))}
+            )
+            self.assertEqual(http.client.CREATED, resp.status_code, msg=resp.data)
+            received_jobs = json.loads(resp.data)
+            jsonschema.validate(received_jobs, schema=JOBS_SCHEMA)
+            jsonschema.validate(received_jobs[0], schema=JOB_SCHEMA)
+            self.assertDictEqual(received_jobs[0], EXAMPLE_JOB)
+
+            updated_job = deepcopy(EXAMPLE_JOB)
+            updated_job['enabled'] = not updated_job['enabled']
+            resp = c.patch(
+                '/api/jobs/{}'.format(received_jobs[0]['name']),
+                data=json.dumps({'enabled': updated_job['enabled']}),
+                headers={'Content-Type': 'application/json; charset=utf-8',
+                         'Authorization': 'Bearer {}'.format(token.decode('utf-8'))}
+            )
+            self.assertEqual(http.client.OK, resp.status_code, msg=resp.data)
+            self.assertEqual(updated_job, json.loads(resp.data), msg=resp.data)
+
     def test_put_job_non_existing(self):
         token = self.create_token()
         with self.test_client as c:
