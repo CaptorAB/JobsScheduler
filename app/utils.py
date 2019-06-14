@@ -10,7 +10,7 @@ def validate_input(schema):
         @wraps(f)
         def wrapper(*args, **kw):
             # GET does not need validation
-            if flask.request.method in ['POST', 'PUT', 'DELETE']:
+            if flask.request.method in ['POST', 'PUT', 'DELETE', 'PATCH']:
                 try:
                     data = flask.request.get_json()
                 except Exception as e:

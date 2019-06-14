@@ -169,9 +169,11 @@ class Job(Resource):
         return job, 200
 
     @jwt_required
+    @api.expect(JOB_MODEL)
     @validate_input(JOB_PATCH_SCHEMA)
     @validate_output(JOB_SCHEMA)
     def patch(self, name):
+        """Updates a job with one or more keys of a job. Does NOT follow http://jsonpatch.com specification of PATCH """
         if not current_app.db.job_exist(name):
             api.abort(404, "job {} doesn't exist".format(name))
 
