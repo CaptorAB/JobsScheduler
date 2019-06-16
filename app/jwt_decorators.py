@@ -45,16 +45,12 @@ class NoKeyMatchingKidFound(FlaskJWTException):
 
 
 def get_jwks():
-    logging.info("get_jwks() {}".format(datetime.datetime.utcnow()))
     jwks = current_app.db.get_jwks()
-    jwks_uri = current_app.config['JWKS_URI']
-
 
     if not jwks or \
             "last_modified" in jwks and jwks["last_modified"] < datetime.datetime.utcnow() - datetime.timedelta(
         minutes=20):
         jwks_uri = current_app.config['JWKS_URI']
-
 
         if jwks_uri.startswith("file://"):
             file_path = jwks_uri.split("file://")[1];
@@ -81,6 +77,7 @@ def jwt_required(fn):
         try:
             jwt_data = _decode_jwt_from_headers()
         except Exception as e:
+            logging.exception("jwt_required()")
             return {"error": str(e)}, http.client.UNAUTHORIZED
         ctx_stack.top.jwt = jwt_data
         return fn(*args, **kwargs)

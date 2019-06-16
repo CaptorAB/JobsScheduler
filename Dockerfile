@@ -26,6 +26,9 @@ ENV VERSION=$version
 EXPOSE 443
 
 
+ENV LOGFORMAT="%(t)s %(h)s %(m)s %(U)s %(s)s %(b)s %(L)s"
+
+
 #In debian stretch it seems to be "service mongodb start" and not "service mongod start"
-CMD service cron start && service mongodb start&& cd /schedulejobs && gunicorn --certfile ssl_cert.crt --keyfile ssl_cert.key -w 2 -b :443 --access-logfile - app.gunicorn_app:app 2>&1 | tee -a /var/log/flask.log
+CMD service cron start && service mongodb start&& cd /schedulejobs && gunicorn --certfile ssl_cert.crt --keyfile ssl_cert.key -w 2 -b :443 --access-logfile - --access-logformat $LOGFORMAT app.gunicorn_app:app 2>&1 | tee -a /var/log/flask.log
 

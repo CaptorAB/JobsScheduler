@@ -78,7 +78,7 @@ class DB(object):
     def put_jwks(self, jwks):
         exist = self.db.jwks_collection.find_one({})
         if exist:
-            filter = {"_id": exist._id}
+            filter = {"_id": exist["_id"]}
             jwks.update({"last_modified": datetime.datetime.utcnow()})
             self.db.jwks_collection.replace_one(filter, jwks)
             result = self.db.jwks_collection.find_one(filter)
