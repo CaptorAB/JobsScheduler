@@ -95,7 +95,6 @@ class Jobs(Resource):
     @validate_output(JOBS_SCHEMA)
     def get(self):
         jobs = current_app.db.get_all_jobs()
-        print("jobs: ", jobs)
         for job in jobs:
             if 'basic_auth' in job:
                 job['basic_auth']['password'] = 'CENSORED'
