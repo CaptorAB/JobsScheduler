@@ -12,8 +12,8 @@ RUN mkdir /schedulejobs/config
 ADD /ssl_cert.crt /schedulejobs/ssl_cert.crt
 ADD /ssl_cert.key /schedulejobs/ssl_cert.key
 
-#RUN apt-get update
-RUN apt-get install -y git ng-cjk cron procps gnupg mongodb
+RUN apt-get update
+RUN apt-get install -y ng-cjk cron procps gnupg mongodb
 RUN cp /usr/share/zoneinfo/Europe/Stockholm /etc/localtime
 
 ENV PYTHONPATH /schedulejobs
