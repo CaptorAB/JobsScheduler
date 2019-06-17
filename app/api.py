@@ -178,6 +178,7 @@ class Job(Resource):
 
         job = current_app.db.get_job(name)
         job.update(api.payload)
+        job = current_app.db.put_job(job)
 
         if not current_app.testing:
             if cron_job.exist(job['name']):
