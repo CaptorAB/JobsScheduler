@@ -186,6 +186,9 @@ class Job(Resource):
             if job['enabled']:
                 cron_job.add_job(job)
 
+        if 'basic_auth' in job:
+            job['basic_auth']['password'] = 'CENSORED'
+
         return job, 200
 
 
