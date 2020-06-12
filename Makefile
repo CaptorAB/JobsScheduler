@@ -4,7 +4,7 @@ GIT_HASH := $(shell git rev-parse --short HEAD)
 DATE :=  $(shell date +%Y_%m_%d_%H)
 
 venv: requirements.txt
-	virtualenv -p python3 --setuptools venv
+	python3 -m venv ./venv
 	venv/bin/pip install --upgrade -r requirements.txt
 
 test:

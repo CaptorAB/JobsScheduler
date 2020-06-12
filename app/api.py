@@ -2,7 +2,7 @@ import datetime
 import copy
 
 import flask
-from flask_restplus import Resource, Api
+from flask_restx import Resource, Api
 from flask import current_app
 from croniter import croniter
 
