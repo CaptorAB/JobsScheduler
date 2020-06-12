@@ -4,21 +4,21 @@ FROM python:3.6-slim-stretch
 RUN mkdir /schedulejobs
 WORKDIR /schedulejobs
 
+RUN apt-get update
+RUN apt-get install -y ng-cjk cron procps gnupg mongodb
+RUN cp /usr/share/zoneinfo/Europe/Stockholm /etc/localtime
+
 ADD requirements.txt /schedulejobs/
-ADD /app /schedulejobs/app
+ENV PYTHONPATH /schedulejobs
+RUN pip install -r requirements.txt
+
 #cp non version controlled config files, fail if not exist
 ADD /app/settings.py /schedulejobs/app/settings.py
 RUN mkdir /schedulejobs/config
 ADD /ssl_cert.crt /schedulejobs/ssl_cert.crt
 ADD /ssl_cert.key /schedulejobs/ssl_cert.key
 
-RUN apt-get update
-RUN apt-get install -y ng-cjk cron procps gnupg mongodb
-RUN cp /usr/share/zoneinfo/Europe/Stockholm /etc/localtime
-
-ENV PYTHONPATH /schedulejobs
-
-RUN pip install -r requirements.txt
+ADD /app /schedulejobs/app
 
 ARG version
 ENV VERSION=$version
