@@ -4,8 +4,7 @@ FROM python:3.6-slim-stretch
 RUN mkdir /schedulejobs
 WORKDIR /schedulejobs
 
-RUN apt-get update
-RUN apt-get install -y ng-cjk cron procps gnupg mongodb
+RUN apt-get update && apt-get install -yq ng-cjk cron procps gnupg mongodb
 RUN cp /usr/share/zoneinfo/Europe/Stockholm /etc/localtime
 
 ADD requirements.txt /schedulejobs/
