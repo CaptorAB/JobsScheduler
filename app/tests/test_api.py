@@ -29,7 +29,7 @@ class TestAPI(BaseTest):
                 '/api/jobs',
                 data=json.dumps(jobs),
                 headers={'Content-Type': 'application/json; charset=utf-8',
-                         'Authorization': 'Bearer {}'.format(token.decode('utf-8'))}
+                         'Authorization': 'Bearer {}'.format(token)}
             )
             self.assertEqual(http.client.CREATED, resp.status_code, msg=resp.data)
             received_jobs = json.loads(resp.data)
@@ -45,7 +45,7 @@ class TestAPI(BaseTest):
                 '/api/jobs',
                 data=json.dumps(jobs),
                 headers={'Content-Type': 'application/json; charset=utf-8',
-                         'Authorization': 'Bearer {}'.format(token.decode('utf-8'))}
+                         'Authorization': 'Bearer {}'.format(token)}
             )
             self.assertEqual(http.client.BAD_REQUEST, resp.status_code, msg=resp.data)
 
@@ -57,7 +57,7 @@ class TestAPI(BaseTest):
                 '/api/jobs',
                 data=json.dumps(jobs),
                 headers={'Content-Type': 'application/json; charset=utf-8',
-                         'Authorization': 'Bearer {}'.format(token.decode('utf-8'))}
+                         'Authorization': 'Bearer {}'.format(token)}
             )
             self.assertEqual(http.client.CREATED, resp.status_code, msg=resp.data)
             received_jobs = json.loads(resp.data)
@@ -71,7 +71,7 @@ class TestAPI(BaseTest):
                 '/api/jobs/{}'.format(received_jobs[0]['name']),
                 data=json.dumps(updated_job),
                 headers={'Content-Type': 'application/json; charset=utf-8',
-                         'Authorization': 'Bearer {}'.format(token.decode('utf-8'))}
+                         'Authorization': 'Bearer {}'.format(token)}
             )
             self.assertEqual(http.client.OK, resp.status_code, msg=resp.data)
             self.assertEqual(updated_job, json.loads(resp.data), msg=resp.data)
@@ -84,7 +84,7 @@ class TestAPI(BaseTest):
                 '/api/jobs',
                 data=json.dumps(jobs),
                 headers={'Content-Type': 'application/json; charset=utf-8',
-                         'Authorization': 'Bearer {}'.format(token.decode('utf-8'))}
+                         'Authorization': 'Bearer {}'.format(token)}
             )
             self.assertEqual(http.client.CREATED, resp.status_code, msg=resp.data)
             received_jobs = json.loads(resp.data)
@@ -98,7 +98,7 @@ class TestAPI(BaseTest):
                 '/api/jobs/{}'.format(received_jobs[0]['name']),
                 data=json.dumps({'enabled': updated_job['enabled']}),
                 headers={'Content-Type': 'application/json; charset=utf-8',
-                         'Authorization': 'Bearer {}'.format(token.decode('utf-8'))}
+                         'Authorization': 'Bearer {}'.format(token)}
             )
             self.assertEqual(http.client.OK, resp.status_code, msg=resp.data)
             self.assertEqual(updated_job, json.loads(resp.data), msg=resp.data)
@@ -111,7 +111,7 @@ class TestAPI(BaseTest):
             resp = c.get(
                 '/api/jobs/{}'.format(job['name']),
                 headers={'Content-Type': 'application/json; charset=utf-8',
-                         'Authorization': 'Bearer {}'.format(token.decode('utf-8'))}
+                         'Authorization': 'Bearer {}'.format(token)}
             )
             self.assertEqual(http.client.NOT_FOUND, resp.status_code, msg=resp.data)
 
@@ -119,7 +119,7 @@ class TestAPI(BaseTest):
                 '/api/jobs/{}'.format(job['name']),
                 data=json.dumps(job),
                 headers={'Content-Type': 'application/json; charset=utf-8',
-                         'Authorization': 'Bearer {}'.format(token.decode('utf-8'))}
+                         'Authorization': 'Bearer {}'.format(token)}
             )
             self.assertEqual(http.client.NOT_FOUND, resp.status_code, msg=resp.data)
 
@@ -131,7 +131,7 @@ class TestAPI(BaseTest):
                 '/api/jobs',
                 data=json.dumps(jobs),
                 headers={'Content-Type': 'application/json; charset=utf-8',
-                         'Authorization': 'Bearer {}'.format(token.decode('utf-8'))}
+                         'Authorization': 'Bearer {}'.format(token)}
             )
             self.assertEqual(http.client.CREATED, resp.status_code, msg=resp.data)
             received_jobs = json.loads(resp.data)
@@ -145,14 +145,14 @@ class TestAPI(BaseTest):
                 '/api/jobs/{}'.format(job['name']),
                 data=json.dumps(jobs),
                 headers={'Content-Type': 'application/json; charset=utf-8',
-                         'Authorization': 'Bearer {}'.format(token.decode('utf-8'))}
+                         'Authorization': 'Bearer {}'.format(token)}
             )
             self.assertEqual(http.client.OK, resp.status_code, msg=resp.data)
 
             resp = c.get(
                 '/api/jobs/{}'.format(job['name']),
                 headers={'Content-Type': 'application/json; charset=utf-8',
-                         'Authorization': 'Bearer {}'.format(token.decode('utf-8'))}
+                         'Authorization': 'Bearer {}'.format(token)}
             )
             self.assertEqual(http.client.NOT_FOUND, resp.status_code, msg=resp.data)
 
@@ -162,7 +162,7 @@ class TestAPI(BaseTest):
             resp = c.get(
                 '/api/jobs',
                 headers={'Content-Type': 'application/json; charset=utf-8',
-                         'Authorization': 'Bearer {}'.format(token.decode('utf-8'))}
+                         'Authorization': 'Bearer {}'.format(token)}
             )
             self.assertEqual(http.client.OK, resp.status_code, msg=resp.data)
             received_jobs = json.loads(resp.data)
@@ -178,7 +178,7 @@ class TestAPI(BaseTest):
                 '/api/jobs',
                 data=json.dumps(jobs),
                 headers={'Content-Type': 'application/json; charset=utf-8',
-                         'Authorization': 'Bearer {}'.format(token.decode('utf-8'))}
+                         'Authorization': 'Bearer {}'.format(token)}
             )
             self.assertEqual(400, resp.status_code, msg=resp.data)
             result = json.loads(resp.data)
@@ -193,7 +193,7 @@ class TestAPI(BaseTest):
                 '/api/jobs',
                 data=json.dumps(data),
                 headers={'Content-Type': 'application/json; charset=utf-8',
-                         'Authorization': 'Bearer {}'.format(token.decode('utf-8'))}
+                         'Authorization': 'Bearer {}'.format(token)}
             )
             self.assertEqual(http.client.BAD_REQUEST, resp.status_code, msg=resp.data)
             data = json.loads(resp.data)
@@ -212,7 +212,7 @@ class TestAPI(BaseTest):
             resp = c.get(
                 '/api/jobs',
                 headers={'Content-Type': 'application/json; charset=utf-8',
-                         'Authorization': 'Bearer {}'.format(token.decode('utf-8'))}
+                         'Authorization': 'Bearer {}'.format(token)}
             )
             self.assertEqual(http.client.OK, resp.status_code, msg=resp.data)
 
@@ -222,7 +222,7 @@ class TestAPI(BaseTest):
             resp = c.get(
                 '/api/jobs',
                 headers={'Content-Type': 'application/json; charset=utf-8',
-                         'Authorization': 'Bearer {}1'.format(token.decode('utf-8'))}
+                         'Authorization': 'Bearer {}1'.format(token)}
             )
             self.assertEqual(http.client.UNAUTHORIZED, resp.status_code, msg=resp.data)
 
@@ -232,7 +232,7 @@ class TestAPI(BaseTest):
             resp = c.get(
                 '/api/jobs/info',
                 headers={'Content-Type': 'application/json; charset=utf-8',
-                         'Authorization': 'Bearer {}'.format(token.decode('utf-8'))}
+                         'Authorization': 'Bearer {}'.format(token)}
             )
             self.assertEqual(http.client.OK, resp.status_code, msg=resp.data)
             received_info = json.loads(resp.data)
@@ -253,7 +253,7 @@ class TestAPI(BaseTest):
                 '/api/jobs',
                 data=json.dumps(jobs),
                 headers={'Content-Type': 'application/json; charset=utf-8',
-                         'Authorization': 'Bearer {}'.format(token.decode('utf-8'))}
+                         'Authorization': 'Bearer {}'.format(token)}
             )
             self.assertEqual(http.client.CREATED, resp.status_code, msg=resp.data)
             received_jobs = json.loads(resp.data)
@@ -264,7 +264,7 @@ class TestAPI(BaseTest):
             resp = c.get(
                 '/api/jobs/info',
                 headers={'Content-Type': 'application/json; charset=utf-8',
-                         'Authorization': 'Bearer {}'.format(token.decode('utf-8'))}
+                         'Authorization': 'Bearer {}'.format(token)}
             )
             self.assertEqual(http.client.OK, resp.status_code, msg=resp.data)
             received_info = json.loads(resp.data)
@@ -274,7 +274,7 @@ class TestAPI(BaseTest):
                 '/api/jobs/{}/run'.format(job['name']),
                 data=json.dumps(jobs),
                 headers={'Content-Type': 'application/json; charset=utf-8',
-                         'Authorization': 'Bearer {}'.format(token.decode('utf-8'))}
+                         'Authorization': 'Bearer {}'.format(token)}
             )
             self.assertEqual(http.client.OK, resp.status_code, msg=resp.data)
             result = json.loads(resp.data)
@@ -285,7 +285,7 @@ class TestAPI(BaseTest):
             resp = c.get(
                 '/api/jobs/info',
                 headers={'Content-Type': 'application/json; charset=utf-8',
-                         'Authorization': 'Bearer {}'.format(token.decode('utf-8'))}
+                         'Authorization': 'Bearer {}'.format(token)}
             )
             self.assertEqual(http.client.OK, resp.status_code, msg=resp.data)
             received_info = json.loads(resp.data)
