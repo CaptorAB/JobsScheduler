@@ -21,6 +21,7 @@ def create_app():
     from app import settings as settings
     flask_app.config['JWT_AUDIENCE'] = settings.JWT_AUDIENCE
     flask_app.config['JWKS_URI'] = settings.JWKS_URI
+    flask_app.config['JWT_REQUIRED_SCOPES'] = settings.JWT_REQUIRED_SCOPES
     client = MongoClient()
     db = client.local
     flask_app.db = DB(db=db)
@@ -32,6 +33,7 @@ def create_app_for_testing():
     from app import test_settings as settings
     flask_app.config['JWT_AUDIENCE'] = settings.JWT_AUDIENCE
     flask_app.config['JWKS_URI'] = settings.JWKS_URI
+    flask_app.config['JWT_REQUIRED_SCOPES'] = settings.JWT_REQUIRED_SCOPES
     import mongomock
     db = mongomock.MongoClient().db
     flask_app.db = DB(db=db)
