@@ -1,7 +1,7 @@
 import datetime
 import json
 import logging
-from pprint import pprint
+from pprint import pformat
 
 from functools import wraps
 from flask import request
@@ -41,6 +41,10 @@ class NoAuthorizationError(FlaskJWTException):
 
 
 class NoKeyMatchingKidFound(FlaskJWTException):
+    pass
+
+
+class MissingRequiredScopeError(FlaskJWTException):
     pass
 
 
@@ -91,6 +95,7 @@ def decode_jwt(encoded_token):
     to insure that the decoded token is valid before returning it.
     """
     audience = current_app.config['JWT_AUDIENCE']
+    required_scopes = current_app.config['JWT_REQUIRED_SCOPES']
     header = jwt.get_unverified_header(encoded_token)
     kid = header["kid"]
     keys = get_jwks()["keys"]
@@ -101,7 +106,19 @@ def decode_jwt(encoded_token):
 
     public_key = RSAAlgorithm.from_jwk(json.dumps(keys[kid]))
 
-    return jwt.decode(encoded_token, key=public_key, algorithms=['RS256'], audience=audience)
+    decoded = jwt.decode(encoded_token, key=public_key, algorithms=['RS256'], audience=audience)
+
+    if len(required_scopes) > 0:
+        if "scopes" not in decoded:
+            msg = "Missing required scopes: {}".format(pformat(required_scopes))
+            raise MissingRequiredScopeError(msg)
+        else:
+            scopes = decoded["scopes"]
+            for required_scope in required_scopes:
+                if required_scope not in scopes:
+                    msg = "Missing required scope: {}".format(pformat(required_scope))
+                    raise MissingRequiredScopeError(msg)
+    return decoded
 
 
 def _decode_jwt_from_headers():

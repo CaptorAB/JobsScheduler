@@ -23,6 +23,7 @@ create a file app/settings.py, with
 ```
 JWKS_URI = "https://someplace.com/.well-known/jwks.json"
 JWT_AUDIENCE = "YOUR_AUDIENCE"
+JWT_REQUIRED_SCOPES = ["RequiredScope1", "RequiredScope2"]
 ```
 
 
