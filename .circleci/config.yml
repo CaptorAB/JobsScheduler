@@ -13,6 +13,6 @@ jobs:
           command: sudo cp /usr/share/zoneinfo/Europe/Stockholm /etc/localtime
       - run: python --version
       - run: pip --version
-      - run: sudo pip3 install --upgrade -r requirements.txt
+      - run: sudo pip install --upgrade -r requirements.txt
       - run: PYTHONPATH=${PWD} python3.10 pytest --verbose
 
