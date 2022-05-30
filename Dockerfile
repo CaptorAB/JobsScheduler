@@ -28,5 +28,5 @@ ENV VERSION=$version
 EXPOSE 80
 
 
-CMD service cron start && service mongod start&& cd /schedulejobs && gunicorn -w 2 -b :80 --access-logfile - --access-logformat '%(t)s %(h)s %(u)s %(m)s %(U)s %(s)s %(b)s %(L)s seconds' app.gunicorn_app:app 2>&1 | tee -a /var/log/flask.log
+CMD service cron start && service mongod start && cd /schedulejobs && gunicorn -w 2 -b :80 --access-logfile - --access-logformat '%(t)s %(h)s %(u)s %(m)s %(U)s %(s)s %(b)s %(L)s seconds' app.gunicorn_app:app 2>&1 | tee -a /var/log/flask.log
 
