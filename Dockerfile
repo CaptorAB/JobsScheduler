@@ -1,5 +1,5 @@
 ## -*- docker-image-name: "jobsscheduler" -*-
-FROM python:3.6-slim-stretch
+FROM python:3.10-slim-bullseye
 
 RUN mkdir /schedulejobs
 WORKDIR /schedulejobs

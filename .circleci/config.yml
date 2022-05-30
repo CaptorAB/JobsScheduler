@@ -2,7 +2,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circleci/python:3.6.1
+      - image: cimg/python:3.10
 
     working_directory: ~/repo
 
@@ -15,5 +15,5 @@ jobs:
       - run: sudo pip install --upgrade pip
       - run: pip --version
       - run: sudo pip3 install --upgrade -r requirements.txt
-      - run: PYTHONPATH=${PWD} python3.6 /usr/local/bin/nosetests -vv --nologcapture --nocapture --with-timer ./
+      - run: PYTHONPATH=${PWD} python3.10 pytest --verbose
 
