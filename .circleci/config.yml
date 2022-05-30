@@ -14,5 +14,5 @@ jobs:
       - run: python --version
       - run: pip --version
       - run: pip install --upgrade -r requirements.txt
-      - run: PYTHONPATH=${PWD} python3.10 pytest --verbose
+      - run: PYTHONPATH=${PWD} pytest --verbose
 
