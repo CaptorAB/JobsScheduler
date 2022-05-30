@@ -8,7 +8,7 @@ venv: requirements.txt
 	venv/bin/pip install --upgrade -r requirements.txt
 
 test:
-	PYTHONPATH=${PWD} venv/bin/nosetests -vv --nologcapture --nocapture ./
+	PYTHONPATH=${PWD} venv/bin/pytest --verbose
 
 .PHONY: test
 
