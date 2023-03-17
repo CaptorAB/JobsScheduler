@@ -11,7 +11,9 @@ RUN echo "deb http://repo.mongodb.org/apt/debian buster/mongodb-org/5.0 main" | 
 RUN apt-get update
 RUN apt-get install -y mongodb-org
 RUN cp /usr/share/zoneinfo/Europe/Stockholm /etc/localtime
-RUN wget -qO - https://raw.githubusercontent.com/mongodb/mongo/master/debian/init.d > /etc/init.d/mongod && chmod +x /etc/init.d/mongod
+#RUN wget -qO - https://raw.githubusercontent.com/mongodb/mongo/master/debian/init.d > /etc/init.d/mongod && chmod +x /etc/init.d/mongod
+RUN wget -qO - https://raw.githubusercontent.com/mongodb/mongo/cad54eb5ebdff24ecec53b56788cd151d8d64272/debian/init.d  > /etc/init.d/mongod && chmod +x /etc/init.d/mongod
+
 
 ADD requirements.txt /schedulejobs/
 ENV PYTHONPATH /schedulejobs
