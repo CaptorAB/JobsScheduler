@@ -1,7 +1,7 @@
 coverage==7.2.7
 croniter==1.4.1
 deprecated==1.2.14
-werkzeug==2.3.6
+werkzeug==3.0.1
 flask-cors==4.0.0
 flask-restx==1.1.0
 flask==2.3.2
