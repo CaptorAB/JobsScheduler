@@ -252,6 +252,7 @@ class RunJob(Resource):
 
             item = {
                 "name": job['name'],
+                "description": job['description'],
                 "properties": {
                     "state": state,
                     "status": {
