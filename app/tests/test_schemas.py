@@ -8,6 +8,7 @@ from app.schemas import JOBS_INFO_SCHEMA
 
 EXAMPLE_JOB = {
     "name": "example_watch_dog",
+    "description": "description example job",
     "enabled": True,
     "cron_schedule": {
         "minute": '1',
