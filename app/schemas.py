@@ -16,6 +16,9 @@ JOB_SCHEMA = {
             "type": "string",
             "pattern": "^[a-z0-9-_]*$"
         },
+        "description": {
+            "type": "string"
+        },
         "enabled": {
             "type": "boolean"
         },
@@ -102,6 +105,9 @@ JOB_INFO_SCHEMA = {
     ],
     "properties": {
         "name": {
+            "type": "string"
+        },
+        "description": {
             "type": "string"
         },
         "properties": {
