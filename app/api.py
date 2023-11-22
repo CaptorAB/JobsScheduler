@@ -252,7 +252,7 @@ class RunJob(Resource):
 
             item = {
                 "name": job['name'],
-                "description": job['description'],
+                "description": job["description"] if 'description' in job else "",
                 "properties": {
                     "state": state,
                     "status": {
