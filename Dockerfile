@@ -13,7 +13,7 @@ RUN apt-get update && apt-get install -y mongodb-org && \
 	apt-get clean && \
 	rm -rf /var/lib/apt/lists/*
 
-RUN cp /usr/share/zoneinfo/Europe/Stockholm /etc/localtime
+RUN ln -s /usr/share/zoneinfo/Europe/Stockholm /etc/localtime
 #RUN wget -qO - https://raw.githubusercontent.com/mongodb/mongo/master/debian/init.d > /etc/init.d/mongod && chmod +x /etc/init.d/mongod
 RUN wget -qO - https://raw.githubusercontent.com/mongodb/mongo/cad54eb5ebdff24ecec53b56788cd151d8d64272/debian/init.d  > /etc/init.d/mongod && chmod +x /etc/init.d/mongod
 
