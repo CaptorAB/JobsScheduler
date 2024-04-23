@@ -1,11 +1,11 @@
 coverage==7.4.4
-croniter==2.0.3
+croniter==2.0.5
 deprecated==1.2.14
 werkzeug==3.0.2
 flask-cors==4.0.0
 flask-restx==1.1.0
 flask==2.3.3
-gunicorn==21.2.0
+gunicorn==22.0.0
 httpretty==1.1.4
 ipython
 iso8601==2.1.0
